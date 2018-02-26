@@ -577,7 +577,7 @@ op {
   }
 }
 op {
-  input: "conv_stage0_block1_branch2c"
+  input: "bn_stage0_block1_branch2c"
   input: "scale_stage0_block1_branch2c_w"
   output: "scale_stage0_block1_branch2c_internal"
   type: "Mul"
@@ -656,7 +656,7 @@ op {
   }
 }
 op {
-  input: "conv_stage0_block2_branch2a"
+  input: "bn_stage0_block2_branch2a"
   input: "scale_stage0_block2_branch2a_w"
   output: "scale_stage0_block2_branch2a_internal"
   type: "Mul"

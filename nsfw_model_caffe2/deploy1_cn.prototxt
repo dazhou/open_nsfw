@@ -516,7 +516,7 @@ layer {
 layer {
   name: "scale_stage0_block1_branch2c"
   type: "Scale"
-  bottom: "conv_stage0_block1_branch2c"
+  bottom: "bn_stage0_block1_branch2c"
   top: "scale_stage0_block1_branch2c"
   scale_param {
     bias_term: true
@@ -586,7 +586,7 @@ layer {
 layer {
   name: "scale_stage0_block2_branch2a"
   type: "Scale"
-  bottom: "conv_stage0_block2_branch2a"
+  bottom: "bn_stage0_block2_branch2a"
   top: "scale_stage0_block2_branch2a"
   scale_param {
     bias_term: true
