@@ -16,7 +16,7 @@ from StringIO import StringIO
 
 import skimage.io
 import skimage.transform
-from caffe2.python import core, workspace
+#from caffe2.python import core, workspace
 from matplotlib import pyplot
 
 
@@ -74,10 +74,12 @@ def main(argv):
     with open("predict_net.pb") as f:
     	predict_net = f.read()
 
-    nsfw_net = workspace.Predictor(init_net, predict_net)
+    #nsfw_pred = workspace.Predictor(init_net, predict_net)
 
     img = skimage.img_as_float(skimage.io.imread(args.input_file)).astype(np.float32)
+
     img = rescale(img, 256, 256)
+
     img = crop_center(img, 224, 224)
 
     img = img.swapaxes(1, 2).swapaxes(0, 1)
@@ -97,16 +99,23 @@ def main(argv):
 
     #img.shape = (1,) + img.shape
 
-    print "NCHW: ", img.shape
+    import caffe
+    nsfw_net = caffe.Net("deploy.prototxt","resnet_50_1by2_nsfw1.caffemodel", caffe.TEST)
 
+    input_name = nsfw_net.inputs[0]
+    output_layers = nsfw_net.outputs
+    all_outputs = nsfw_net.forward_all(blobs=output_layers,
+                    **{input_name: img})
+
+
+    scores = all_outputs[output_layers[0]][0].astype(float)
 
     # Classify.
-    outputs = nsfw_net.run({'data':img})
-    scores = outputs[0][0].astype(float)
+    #scores = nsfw_pred.run({'data':img})
 
     # Scores is the array containing SFW / NSFW image probabilities
     # scores[1] indicates the NSFW probability
-    print "NSFW score:  " , scores[1]
+    print "NSFW score:  " , scores
 
 
 
